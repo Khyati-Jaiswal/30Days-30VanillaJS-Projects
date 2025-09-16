@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Drum Kit">
+        <meta name="author" content="Khyati Jaiswal">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Drum Kit</title>
+        <style>
+            body {
+                background-image: url(https://i.pinimg.com/1200x/50/e4/21/50e421a7723337311c3f2c4e158acbab.jpg);
+                font-family: 'Times New Roman', Times, serif;
+                color: white;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                display:flex;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+                height: 100vh;
+            }
+            .left {
+                text-align: center;
+                font-weight: bold;
+            }
+            .left h1 {
+                font-size: 3rem;
+                margin-bottom: 10px;
+            }
+            .left p {
+                font-size: 1.2rem;
+            }
+            .right {
+                display:flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: space-evenly;
+                gap: 20px;
+                max-width: 400px;
+            }
+            .key {
+                padding: 15px 25px;
+                border: 2px solid white;
+                border-radius: 12px;
+                text-align: center;
+                font-size: 1.2rem;
+                transition: all 0.1s ease; 
+                background-color: rgba(0, 0, 0, 0.5);
+                cursor: pointer;
+            }
+            .key.active {
+                transform: scale(1.1);
+                background: #ff9800;
+                box-shadow: 0 0 25px #ff9800, 0 0 40px #ff5722;
+                border-color: #ffcc80;
+            }
+            .key span {
+                font-size: 0.9rem;
+                color: #ffcc80;
+            }
+            .key kbd {
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="left">
+                <h1>Drum Kit</h1>
+                <p>Press the keys to play the respective sounds</p>
+            </div>
+            <div class="right">
+                <div class ="key" id="keyW"><kbd>W</kbd><br><span>Kick</span></div>
+                <div class ="key" id="keyE"><kbd>E</kbd><br><span>Snare</span></div>
+                <div class ="key" id="keyA"><kbd>A</kbd><br><span>HiHat</span></div>
+                <div class ="key" id="keyS"><kbd>S</kbd><br><span>Clap</span></div>
+                <div class ="key" id="keyD"><kbd>D</kbd><br><span>Tom</span></div>
+                <div class ="key" id="keyZ"><kbd>Z</kbd><br><span>Ride</span></div>
+                <div class ="key" id="keyX"><kbd>X</kbd><br><span>Crash</span></div>
+            </div>
+        </div>
+        <audio id="soundW" src="https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3"></audio>
+        <audio id="soundE" src="https://s3.amazonaws.com/freecodecamp/drums/Brk_Snr.mp3"></audio>
+        <audio id="soundA" src="https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3"></audio>
+        <audio id="soundS" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3"></audio>
+        <audio id="soundD" src="https://s3.amazonaws.com/freecodecamp/side_stick_1.mp3"></audio>
+        <audio id="soundZ" src="https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3"></audio>
+        <audio id="soundX" src="https://s3.amazonaws.com/freecodecamp/drums/Chord_2.mp3"></audio>
+
+        <script>
+            const keyMap = {
+      "W": "soundW",
+      "E": "soundE",
+      "A": "soundA",
+      "S": "soundS",
+      "D": "soundD",
+      "Z": "soundZ",
+      "X": "soundX"
+    };
+
+    window.addEventListener("keydown", (e) => {
+      const key = e.key.toUpperCase();
+      if (keyMap[key]) playSound(key);
+    });
+
+    function playSound(letter) {
+      const audio = document.getElementById(keyMap[letter]);
+      const keyDiv = document.getElementById("key" + letter);
+
+      if (!audio || !keyDiv) return;
+
+      audio.currentTime = 0; 
+      audio.play();
+
+      keyDiv.classList.add("active");
+
+      setTimeout(() => keyDiv.classList.remove("active"), 150);
+    }
+        </script>
+    </body>
+</html>
