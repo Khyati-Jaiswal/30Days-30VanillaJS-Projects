@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Flex Panel Gallery">
+        <meta name="author" content="Khyati Jaiswal">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+        <title>DHH Gallery</title>
+        <style>
+            * {
+                box-sizing : border-box;
+                margin : 0;
+                padding : 0;
+            }
+            html, body {
+                height : 100%;
+                font-family : 'Poppins', sans-serif;
+                overflow : hidden;
+            }
+            .panels {
+                display : flex;
+                height : 100vh;
+                width : 100vw;
+                overflow : hidden;
+            }
+            .panel {
+                flex : 1;
+                display : flex;
+                justify-content : center;
+                align-items : center;
+                color : white;
+                font-size : 2rem;
+                font-weight : bold;
+                text-transform : uppercase;
+                background-size : cover;
+                background-position : center;
+                transition : flex 0.7s ease-in, background 0.2s ease-in;
+                cursor : pointer;
+            }
+            .panel p {
+                background : rgba(0,0,0,0.3);
+                padding : 0.5rem 1rem;
+                border-radius : 10px;
+            }
+            .panel.open {
+                flex : 5;
+                font-size : 4rem;
+            }
+            .panel1 { background-image : url("https://i.pinimg.com/1200x/10/c6/a7/10c6a7cfb88a6c037cb2339d5ed68b5c.jpg");}
+            .panel2 { background-image : url("https://i.pinimg.com/1200x/fb/68/55/fb6855f128e228fa62ed6707e8e427a7.jpg");}
+            .panel3 { background-image : url("https://i.pinimg.com/736x/92/80/ac/9280ac8855062de85a3da99bfc532654.jpg");}
+            .panel4 { background-image : url("https://i.pinimg.com/1200x/d3/9b/15/d39b15a7680dc26a80b6d73b0b8cdaa3.jpg");}
+            .panel5 { background-image : url("https://i.pinimg.com/1200x/c7/42/ff/c742ff054859ac0fc5a730e21449a8e3.jpg");}
+
+        </style>
+    </head>
+    <body>
+        <div class = "panels">
+            <div class = "panel panel1">
+                <p>Seedhe Maut</p>
+                <audio src = "namastuteseedhe_maut.mp3"></audio>
+            </div>
+            <div class = "panel panel2">
+                <p>Krsna</p>
+                <audio src = "no_cap_intro.mp3"></audio>
+            </div>
+            <div class = "panel panel3">
+                <p>Ikka</p>
+                <audio src = "Gojira.mp3"></audio>
+            </div>
+            <div class = "panel panel4">
+                <p>Hanumankind</p>
+                <audio src = "hanumankind_big_dawgs.mp3"></audio>
+            </div>
+            <div class = "panel panel5">
+                <p>Raftaar</p>
+                <audio src = "raftaar.mp3"></audio>
+            </div>
+        </div>
+
+        <script>
+            const panels = document.querySelectorAll('.panel');
+            const audios = document.querySelectorAll('audio');
+
+            function toggleOpen() {
+                this.classList.toggle('open');
+
+                audios.forEach(audio => {
+                    audio.pause();
+                    audio.currentTime = 0;
+                });
+
+                const audio = this.querySelector('audio');
+                if(audio) {
+                    audio.play();
+                }
+            }
+
+            panels.forEach(panel => panel.addEventListener('click',toggleOpen));
+        </script>
+    </body>
+</html>
