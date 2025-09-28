@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content="Slide In On Scroll Effect">
+        <meta name="author" content="Khyati Jaiswal">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Slide In On Scroll</title>
+        <style>
+            body{
+                margin: 0;
+                font-family: sans-serif;
+                background: #ffc600;
+            }
+            .container{
+                max-width: 700px;
+                margin: 100px auto;
+                padding: 40px;
+                background: white;
+            }
+            .align-left{
+                float: left;
+                margin-right: 20px;
+            }
+            .align-right{
+                float: right;
+                margin-left: 20px;
+            }
+            .slide-in{
+                max-width: 300px;
+                width: 100%;
+                height: auto;
+                opacity: 0;
+                transition: all 0.5s;
+            }
+            .align-left.slide-in{
+                transform: translateX(-30%) scale(0.95);
+            }
+            .align-right.slide-in{
+                transform: translateX(30%)scale(0.95);
+            }
+            .slide-in.active{
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Part I: The Architecture of Us</h1>
+            <p>You are the steady rhythm in a world of noise, The quiet gravity that pulls me back to earth When my mind drifts into the clouds. It is not just the way you speak, but the way you listen, Gathering my scattered thoughts like fallen leaves And making a garden of them.In the words of E.E. Cummings,<span>"i carry your heart with me (i carry it in my heart)"</span>That is the blueprint of us. Whether we are miles apart or sharing the same pillow, The distance is a ghost, a thing that cannot touch The tether tied between your soul and mine. I see you in the way the light hits the kitchen floor, In the smell of rain on hot pavement, In the silence that isn't empty, but full of everything We haven't needed to say out loud yet.</p>
+            <img src="IMG_20250411_113021837.jpg" class="slide-in align-left">
+            <h1>Part II: The Quiet Constellation</h1>
+            <p>It is easy to love the sun, but I love your shadows, The tired lines around your eyes after a long day, The way you hold your breath when you’re focused, And the specific, gentle weight of your hand in mine. You are my favorite "at least." At least I have you to go home to. At least your laugh still sounds like a victory. Leo Tolstoy once wrote in Anna Karenina:<span>"He stepped down, trying not to look long at her, as if she were the sun, yet he saw her, like the sun, even without looking."</span>That is how I navigate my days. I don't always have to look at you to know where you are; You are the North Star in my private sky, A constant, burning warmth that keeps the frost away. We are a collection of inside jokes and half-finished sentences, A library of moments that belong to no one else.</p>
+            <img src="1000057462.jpg" class="slide-in align-right">
+            <h1>Part III: The Anchor and the Sail</h1>
+            <p>There is a bravery in the way you love me, A patience that feels like an ancient forest— Deep-rooted, unshakable, and kind. You don't try to change the weather of my moods; You simply stand beside me until the storm passes, Holding the umbrella and reminding me to breathe. As Madeleine L’Engle put it:<span>"The primordial seal of love is that we belong to each other."</span>This belonging isn't a cage; it’s a map. Because of you, the world feels less like a wilderness And more like a path we are clearing together. I love the person you were when we met, The person you are tonight, And the stranger you will become in ten years— Because I know the heart inside will be the same.</p>
+            <img src="1000119665.jpg" class="slide-in align-left">
+            <h1>Part IV: The Infinite Ordinary</h1>
+            <p>I want the mundane years with you. I want the grocery lists and the Tuesday nights, The cold feet under the covers and the burnt toast. I want to argue about movies and then fall asleep With our legs tangled like the roots of old trees. For love is not just the lightning strike, But the fire that we keep fed, day after day, With the small twigs of kindness and the logs of trust. To borrow from Gabriel García Márquez:<span>"It was as if they had leapt over the arduous calvary of conjugal life and gone straight to the heart of love."</span>We have found that heart, haven't we? In the middle of the ordinary, we found the divine. You are my favorite story, the one I keep re-reading, Finding new meanings in the margins, New reasons to stay on every single page.</p>
+            <img src="1000057240.jpg" class="slide-in align-right">
+            <h1>Part V: The Final Verse</h1>
+            <p>If the world were to end tomorrow, I would not spend my last hours looking at the sky. I would spend them looking at you— At the way your lip curls when you smile, At the map of freckles and scars that tell your story. You are my home, not a place but a person, A sanctuary built of bone and heartbeat. I choose you. In every version of reality, in every ticking second, I choose the way you say my name, The way you make the heavy things feel light, And the way you love me, simply and completely. You are my "once in a lifetime," And I am so glad that my lifetime belongs to you.</p>
+        </div>
+        <script>
+            const slideImages = document.querySelectorAll('.slide-in');
+            function checkSlide(){
+                slideImages.forEach(slideImage => {
+                    const slideInAt = (window.scrollY + window.innerHeight) - slideImage.offsetHeight / 2;
+                    const imageBottom = slideImage.offsetTop + slideImage.offsetHeight;
+                    const isHalfShown = slideInAt>slideImage.offsetTop;
+                    const isnotScrolledPast = window.scrollY < imageBottom;
+                    if(isHalfShown && isnotScrolledPast){
+                        slideImage.classList.add('active');
+                    } else {
+                        slideImage.classList.remove('active');
+                    }
+                });
+            }
+            window.addEventListener('scroll',checkSlide);
+            window.addEventListener('load',checkSlide);
+        </script>
+    </body>
+</html>
