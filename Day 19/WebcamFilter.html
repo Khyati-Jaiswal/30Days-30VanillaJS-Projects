@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Khyati Jaiswal">
+        <meta name="description" content="Webcam Filter">
+        <title>Webcam Filter</title>
+
+        <style>
+            body {
+                margin: 0;
+                background: #111;
+                color: white;
+                font-family: sans-serif;
+                text-align: center;
+            }
+            .player {
+                display: none;
+            }
+            .photo {
+                width: 80%;
+                max-width: 800px;
+                margin-top: 20px;
+            }
+            .controls {
+                margin: 20px;
+            }
+            button {
+                padding: 10px 20px;
+                margin: 5px;
+                font-size: 14px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="controls">
+            <button data-effect="normal">Normal</button>
+            <button data-effect="red">Red Effect</button>
+            <button data-effect="rgb">RGB Split</button>
+            <button data-effect="green">Green Screen</button>
+        </div>
+
+        <video class="player"></video>
+        <div class="rgb">
+            <label>R min<input type="range" name="rmin" min="0" max="255"></label>
+            <label>R max<input type="range" name="rmax" min="0" max="255"></label>
+            <label>G min<input type="range" name="gmin" min="0" max="255"></label>
+            <label>G max<input type="range" name="gmax" min="0" max="255"></label>
+            <label>B min<input type="range" name="bmin" min="0" max="255"></label>
+            <label>B max<input type="range" name="bmax" min="0" max="255"></label>
+        </div>
+        <canvas class="photo"></canvas>
+        <div class="strip"></div>
+
+        <audio class="snap" src="https://raw.githubusercontent.com/joshua-gould/sounds/master/camera-shutter.mp3"></audio>
+
+
+
+        <script>
+            const video = document.querySelector('.player');
+            const canvas = document.querySelector('.photo');
+            const ctx = canvas.getContext('2d');
+            const snap = document.querySelector('.snap');
+            let currentEffect = "normal";
+        
+            function getVideo() {
+                navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+                    .then(localMediaStream => {
+                        video.srcObject = localMediaStream;
+                        video.play();
+                    })
+                    .catch(err => {
+                        console.error(`Error:`, err);
+                    });
+            }
+
+            function paintToCanvas() {
+                const width = video.videoWidth;
+                const height = video.videoHeight;
+                canvas.width = width;
+                canvas.height = height;
+                return setInterval(() => {
+                    ctx.drawImage(video, 0, 0, width, height);
+                    let pixels = ctx.getImageData(0, 0, width, height);
+                    if (currentEffect == "red") {
+                    pixels = redEffect(pixels);
+                    } else if (currentEffect == "rgb") {
+                        pixels = rgbSplit(pixels);
+                    } else if (currentEffect == "green") {
+                        pixels = greenScreen(pixels);
+                    }
+
+
+
+                    ctx.putImageData(pixels, 0, 0);
+                }, 16);
+            }
+            video.addEventListener('canplay', paintToCanvas);
+
+
+            document.querySelectorAll('[data-effect]').forEach(button => {
+                button.addEventListener('click', () => {
+                    currentEffect = button.dataset.effect;
+                    console.log(`Effect changed to ${currentEffect}`);
+                });
+            });
+
+
+            function redEffect(pixels) {
+                for (let i = 0; i < pixels.data.length; i += 4) {
+                    pixels.data[i + 0] += 100; // Red
+                    pixels.data[i + 1] -= 50;
+                    pixels.data[i + 2] *= 0.5; 
+                }
+                return pixels;
+            }
+            function rgbSplit(pixels) {
+                for (let i = 0; i < pixels.data.length; i += 4) {
+                    pixels.data[i - 150] = pixels.data[i + 0];
+                    pixels.data[i + 500] = pixels.data[i + 1];
+                    pixels.data[i - 550] = pixels.data[i + 2];
+                }
+                return pixels;
+            }
+
+            function greenScreen(pixels) {
+                const levels = {};
+
+                document.querySelectorAll('.rgb input').forEach(input => {
+                    levels[input.name] = input.value;
+                });
+                for(let i = 0; i < pixels.data.length; i+=4) {
+                    const red = pixels.data[i + 0];
+                    const green = pixels.data[i + 1];
+                    const blue = pixels.data[i + 2];
+
+                    if (
+                        red >= levels.rmin &&
+                        green >= levels.gmin &&
+                        blue >= levels.bmin &&
+                        red <= levels.rmax &&
+                        green <= levels.gmax &&
+                        blue <= levels.bmax
+                    ) {
+                        pixels.data[i + 3] = 0; // remove pixel (transparent)
+                    }
+                }
+                return pixels;
+            }
+            getVideo();
+        </script>
+    </body>
+</html>
