@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Khyati Jaiswal">
+        <meta name="description" content="Geolocation and Compass API Demo">
+        <title>Geolocation and Compass API Demo</title>
+        <style>
+            body {
+                background: #111;
+                color: wheat;
+                text-align: center;
+                font-size: 40px;
+            }
+            #speed {
+                font-size: 80px;
+                margin-top: 20px;
+            }
+            .compass {
+                width: 200px;
+                height: 200px;
+                border: 5px solid wheat;
+                border-radius: 50%;
+                margin: 20px auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .compass::before {
+                content: "";
+                position: absolute;
+                top: 10px;
+            }
+            .compass::after {
+                content: "S";
+                position: absolute;
+                bottom: 10px;
+            }
+            .arrow {
+                font-size: 100px;
+                transform-origin: center;
+                transition: transform 0.5s ease;
+            }
+            #direction {
+                font-size: 50px;
+                letter-spacing: 3px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 id="speed">0 km/h</h1>
+        <div class="compass">
+                <div class="arrow">⬆</div>
+        </div>
+        <div id="direction">N</div>
+        <script>
+            const speedElement = document.getElementById('speed');
+            const arrowElement = document.querySelector('.arrow');
+            const directionElement = document.getElementById('direction');
+            if(navigator.geolocation){
+                navigator.geolocation.watchPosition((data) => {
+                    const speed = data.coords.speed;
+                    const heading = data.coords.heading;
+                    console.log(data.coords);
+                    console.log(`Speed: ${speed}, Heading: ${heading}`);
+                    if(speed===null){
+                        speedElement.textContent = "0 km/h";
+                    } else {
+                        speedElement.textContent = (speed*3.6).toFixed(1) + " km/h";
+                    }
+                    if(heading!=null){
+                        arrowElement.style.transform = `rotate(${heading}deg)`;
+                        const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+                        const index = Math.round(heading / 45) % 8;
+                        directionElement.textContent = directions[index];
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
