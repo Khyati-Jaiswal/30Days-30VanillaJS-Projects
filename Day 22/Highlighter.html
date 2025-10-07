@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Follow-Along Link Highlighter">
+    <meta name="author" content="Khyati Jaiswal">
+    <title>Follow-Along Highlighter</title>
+
+    <style>
+        .highlight {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: rgba(173, 255, 47, 0.3);
+            border-radius: 6px;
+            transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        a {
+            display: inline-block;
+            padding: 2px 4px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul class="menu">
+            <li><a href="">Projects</a></li>
+            <li><a href="">Blogs</a></li>
+            <li><a href="">Tweets</a></li>
+            <li><a href="">History</a></li>
+        </ul>
+    </nav>
+    <div class="wrapper">
+      <p>Lorem ipsum dolor sit amet, <a href="">consectetur</a> adipisicing elit. Est <a href="">explicabo</a> unde natus necessitatibus esse obcaecati distinctio, aut itaque, qui vitae!</p>
+      <p>Aspernatur sapiente quae sint <a href="">soluta</a> modi, atque praesentium laborum pariatur earum <a href="">quaerat</a> cupiditate consequuntur facilis ullam dignissimos, aperiam quam veniam.</p>
+      <p>Cum ipsam quod, incidunt sit ex <a href="">tempore</a> placeat maxime <a href="">corrupti</a> possimus <a href="">veritatis</a> ipsum fugit recusandae est doloremque? Hic, <a href="">quibusdam</a>, nulla.</p>
+      <p>Esse quibusdam, ad, ducimus cupiditate <a href="">nulla</a>, quae magni odit <a href="">totam</a> ut consequatur eveniet sunt quam provident sapiente dicta neque quod.</p>
+      <p>Aliquam <a href="">dicta</a> sequi culpa fugiat <a href="">consequuntur</a> pariatur optio ad minima, maxime <a href="">odio</a>, distinctio magni impedit tempore enim repellendus <a href="">repudiandae</a> quas!</p>
+    </div>
+    <script>
+        const triggers = document.querySelectorAll('a');
+        const highlight = document.createElement('span');
+        highlight.classList.add('highlight');
+        document.body.appendChild(highlight);
+        
+        function highlightLink() {
+            const linkcoords = this.getBoundingClientRect();
+            const coords = {
+                width: linkcoords.width + 8,
+                height: linkcoords.height + 8,
+                top: linkcoords.top + window.scrollY - 4,
+                left: linkcoords.left + window.scrollX - 4
+            };
+            highlight.style.width = `${coords.width}px`;
+            highlight.style.height = `${coords.height}px`;
+            highlight.style.transform = `translate(${coords.left}px, ${coords.top}px)`;
+        }
+        triggers.forEach(a => a.addEventListener('mouseenter',highlightLink));
+    </script>
+</body>
+</html>
