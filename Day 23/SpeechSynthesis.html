@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Khyati Jaiswal">
+        <meta name="description" content="Text-to-Speech Reader">
+        <title>Speech Synthesis</title>
+    </head>
+    <body>
+        <h1>The Voicenator</h1>
+        <select id="voice-select">
+            <option value="">Select a Voice</option>
+        </select>
+        <button id="speak">Speak</button>
+        <script>
+            let voices = [];
+            const voiceSelect = document.getElementById('voice-select');
+            function populateVoices() {
+                voices = window.speechSynthesis.getVoices();
+                voiceSelect.innerHTML = voices.map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`).join('');
+            }
+            function setVoice() {
+                const selectedVoice = voices.find(voice => voice.name === this.value);
+                msg.voice = selectedVoice;
+                speechSynthesis.cancel();
+                speechSynthesis.speak(msg);
+            }
+            voiceSelect.addEventListener('change', setVoice);
+            
+            speechSynthesis.addEventListener('voiceschanged', populateVoices);
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = "Hello Kay, welcome to speech synthesis!";
+            document.getElementById('speak').addEventListener('click', () => {
+                window.speechSynthesis.speak(msg);
+            });
+        </script>
+    </body>
+</html>
