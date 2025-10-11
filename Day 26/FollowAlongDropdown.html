@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Khyati Jaiswal">
+        <meta name="description" content="Follow Along Dropdown NavBar">
+        <title>Follow Along Dropdown NavBar</title>
+        <style>
+            body {
+                margin: 0;
+                font-family: sans-serif;
+                background-color: pink;
+            }
+            nav {
+                position: relative;
+            }
+            nav ul {
+                display: flex;
+                list-style: none;
+                justify-content: center;
+            }
+            .cool > li {
+                position: relative;
+                margin: 20px;
+            }
+            .cool > li > a {
+                padding: 10px 20px;
+                background: black;
+                color: yellow;
+                text-decoration: none;
+            }
+            .dropdown {
+                position: absolute;
+                top: 100%;
+                opacity: 0;
+                display: none;
+                background: white;
+                padding: 20px;
+            }
+            .dropdownBackground {
+                position: absolute;
+                background: white;
+                border-radius: 5px;
+                transition: all 0.3s;
+                opacity: 0;
+            }
+            .dropdownBackground.open {
+                opacity: 1;
+            }
+            .trigger-enter .dropdown {
+                display: block;
+            }
+            .trigger-enter-active .dropdown {
+                opacity: 1;
+                transition: all 0.3s;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="top">
+            <div class="dropdownBackground">
+                <span class="arrow"></span>
+            </div>
+            <ul class="cool">
+                <li>
+                    <a href="#">About Me</a>
+                    <div class="dropdown"><p>Wes Bos sure does love web development. He teaches things like JavaScript, CSS and BBQ. Wait. BBQ isn't part of web development. It should be though!</p></div>
+                </li>
+                <li>
+                    <a href="#">Courses</a>
+                    <div class="dropdown"><p>Our courses cover a wide range of web development topics, from beginner to advanced levels.</p></div>
+                </li>
+                <li>
+                    <a href="#">Other</a>
+                    <div class="dropdown"><p>Check out these other resources and links related to web development.</p></div>
+                </li>
+            </ul>
+        </nav>
+
+        <script>
+            const triggers = document.querySelectorAll('.cool > li');
+            const background = document.querySelector('.dropdownBackground');
+            const nav = document.querySelector('.top');
+
+            function handleEnter() {
+                this.classList.add('trigger-enter');
+
+                setTimeout(() => {
+                    if(this.classList.contains('trigger-enter')) {
+                        this.classList.add('trigger-enter-active');
+                    }
+                }, 150);
+                background.classList.add('open');
+                const dropdown = this.querySelector('.dropdown');
+                const dropdownCoords = dropdown.getBoundingClientRect();
+                const navCoords = nav.getBoundingClientRect();
+
+                const coords = {
+                    height: dropdownCoords.height,
+                    width: dropdownCoords.width,
+                    top: dropdownCoords.top - navCoords.top,
+                    left: dropdownCoords.left - navCoords.left
+                };
+                background.style.setProperty('width', `${coords.width}px`);
+                background.style.setProperty('height', `${coords.height}px`);
+                background.style.setProperty('transform',`translate(${coords.left}px, ${coords.top}px)`);
+            }
+
+            function handleLeave() {
+                this.classList.remove('trigger-enter', 'trigger-enter-active');
+                background.classList.remove('open');
+            }
+
+            triggers.forEach(trigger => trigger.addEventListener('mouseenter', handleEnter));
+            triggers.forEach(trigger => trigger.addEventListener('mouseleave', handleLeave));
+        </script>
+    </body>
+</html>
