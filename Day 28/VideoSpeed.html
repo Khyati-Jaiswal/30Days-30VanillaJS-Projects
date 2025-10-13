@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Khyati Jaiswal">
+        <meta name="description" content="Video Speed Scrubber">
+        <title>Video Speed Scrubber</title>
+
+        <style>
+            .wrapper {
+                display: flex;
+                align-items: center;
+            }
+            .video {
+                width: 700px;
+            }
+            .speed {
+                width: 60px;
+                height: 400px;
+                margin-left: 20px;
+                background: #eee;
+                position: relative;
+            }
+            .speed-bar {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 25%;
+                background: orange;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <video class="video" width="765" height="430" controls loop><source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4"></video>
+            <div class="speed">
+                <div class="speed-bar">1x</div>
+            </div>
+        </div>
+
+        <script>
+            const speed = document.querySelector('.speed');
+            const bar = document.querySelector('.speed-bar');
+            const video = document.querySelector('.video');
+
+            let isDown = false;
+            speed.addEventListener('mousedown', () => isDown = true);
+            speed.addEventListener('mouseup', () => isDown = false);
+            speed.addEventListener('mouseleave', () => isDown = false);
+
+            function handleMove(e) {
+                if(!isDown) return;
+                const y = e.pageY - speed.offsetTop;
+                const percent = 1 - Math.min(Math.max(y / speed.offsetHeight, 0), 1);
+
+                const min = 0.4;
+                const max = 4;
+
+                const playbackRate = percent * (max - min) + min;
+
+                bar.style.height = `${percent * 100}%`;
+                bar.textContent = playbackRate.toFixed(2) + 'x';
+
+                video.playbackRate = playbackRate;
+            }
+            speed.addEventListener('mousemove', handleMove);
+        </script>
+    </body>
+</html>
