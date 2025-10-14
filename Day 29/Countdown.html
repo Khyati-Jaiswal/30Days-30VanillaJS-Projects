@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Khyati Jaiswal">
+        <meta name="description" content="Countdown Timer">
+        <title>Countdown Timer</title>
+    </head>
+    <body>
+        <h1 id="time-left"></h1>
+        <p id="end-time"></p>
+
+        <button data-time="10">10 secs</button>
+        <button data-time="60">1 min</button>
+        <form id="custom"><input type="text" name="minutes" placeholder="Enter Minutes"></form>
+        <script>
+            const display = document.getElementById('time-left');
+            const endDisplay = document.getElementById('end-time');
+            const buttons = document.querySelectorAll('[data-time]');
+            document.getElementById('custom').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const mins = this.minutes.value;
+                timer(mins * 60);
+
+                this.reset();
+            });
+
+            function startTimer() {
+                const seconds = parseInt(this.dataset.time);
+                timer(seconds);
+            }
+            buttons.forEach(button => button.addEventListener('click', startTimer));
+            let countdown;
+            function timer(seconds) {
+                clearInterval(countdown);
+
+                const now = Date.now();
+                const then = now + seconds * 1000;
+
+                displayTimeLeft(seconds);
+                displayEndTime(then);
+
+                countdown = setInterval(() => {
+                    const secondsLeft = Math.round((then - Date.now())/1000);
+                    displayTimeLeft(secondsLeft);
+
+                    if(secondsLeft <= 0) {
+                        clearInterval(countdown);
+                        return;
+                    }
+                }, 1000);
+            }
+
+            function displayTimeLeft(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const remainder = seconds % 60;
+
+                const formatted = `${minutes}:${remainder < 10 ? '0' : ''}${remainder}`;
+                display.textContent = formatted;
+            }
+
+            function displayEndTime(timestamp) {
+                const end = new Date(timestamp);
+
+                const hours = end.getHours();
+                const minutes = end.getMinutes();
+
+                endDisplay.textContent = `Be back at ${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+            }
+
+            timer(10);
+        </script>
+    </body>
+</html>
