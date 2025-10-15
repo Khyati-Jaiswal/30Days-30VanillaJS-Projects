@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Type Ahead/Autocomplete Search Bar">
+        <meta name="author" content="Khyati Jaiswal">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Type Ahead Search Bar</title>
+        <style>
+            * {
+                margin : 0;
+                padding : 0;
+                box-sizing : border-box;
+                font-family :Arial, Helvetica, sans-serif;
+            }
+            body {
+                background-color : chartreuse;
+                min-height : 100vh;
+                display : flex;
+                align-items : center;
+                justify-content : center;
+            }
+            main {
+                width : 90%;
+                max-width : 600px;
+            }
+            .search-form {
+                position : relative;
+                display : flex;
+                flex-direction : column;
+                gap : 10px;
+            }
+            input[type = "text"] {
+                width : 100%;
+                padding : 15px 20px;
+                font-size : 1.2rem;
+                border-radius : 8px;
+                border : 1.5px solid #ccc;
+                transition : border-color 0.3s ease;
+            }
+            input [type = "text"]:focus {
+                border-color : #007BFF;
+                outline : none;
+            }
+            .suggestions {
+                list-style : none;
+                position : absolute;
+                width : 100%;
+                background-color : #fff;
+                border-radius : 0 0 8px 8px;
+                box-shadow : 0 4px 6px rgba(0, 0, 0, 0.1);
+                max-height : 300px;
+                overflow-y : auto;
+                top : 100%;
+            }
+            .visually-hidden {
+                position : absolute;
+                width : 1px;
+                height : 1px;
+                overflow : hidden;
+            }
+            .suggestions li {
+                cursor : pointer;
+                padding : 10px 20px;
+                font-size : 1.1rem;
+            }
+            .suggestions li:hover {
+                background-color : #f0f0f0;
+            }
+            .hint {
+                color : #888;
+                text-align : center;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <form class = "search-form" role = "search" autocomplete = "off" onsubmit = "return false;">
+                <label for = "search" class = "visually-hidden">Search Cities or States</label>
+                <input id = "search" name = "search" type = "text" placeholder = "City or State" aria-autocomplete = "list" autocomplete = "off">
+
+                <ul id = "suggestions" class = "suggestions" role = "listbox">
+                    <li role = "option" class = "hint">Start typing to start seeing suggestions</li>
+                </ul>
+            </form>
+        </main>
+        <script>
+            const searchInput = document.getElementById('search');
+            const suggestionsList = document.getElementById('suggestions');
+            const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+            const cities = [];
+
+            fetch(endpoint)
+            .then(response => response.json())
+            .then(data => cities.push(...data));
+
+            function findMatches(wordToMatch, cities) {
+                const regex = new RegExp(wordToMatch, 'gi');
+                return cities.filter(place => place.city.match(regex) || place.state.match(regex));
+            }
+
+            function displayMatches() {
+                const inputVal = this.value.trim();
+
+                if(!inputVal) {
+                    suggestionsList.innerHTML = `<li class = "hint">Start typing to start seeing suggestions</li>`;
+                    return;
+                }
+                const matchArr = findMatches(inputVal, cities);
+
+                const html = matchArr.map(place => {
+                    const regex = new RegExp(inputVal, 'gi');
+                    const cityName = place.city.replace(regex, `<span>${inputVal}</span>`);
+                    const stateName = place.state.replace(regex, `<span>${inputVal}</span>`);
+
+                    return `
+                        <li role = "option">
+                            <span>${cityName}, ${stateName}</span>
+                            <span> - ${place.population}</span>
+                            </li>
+                    `;
+                }).join('');
+
+                suggestionsList.innerHTML = html;
+            }
+
+            searchInput.addEventListener('input', displayMatches);
+        </script>
+    </body>
+</html>
