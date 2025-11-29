@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Shift Multi-Checkbox Selection">
+        <meta name="author" content="Khyati Jaiswal">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Shift Multi Selection</title>
+
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 40px 0;
+                font-family: 'Times New Roman', Times, serif;
+            }
+
+            html {
+                background: yellowgreen;
+            }
+
+            .inbox {
+                max-width: 400px;
+                margin: auto;
+                background: #fff;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            }
+
+            .item {
+                display: flex;
+                align-items: center;
+                border-bottom: 1px solid #eee;
+                padding: 10px;
+            }
+
+            input[type="checkbox"] {
+                margin-right: 16px;
+                cursor: pointer;
+                width: 18px;
+                height: 18px;
+            }
+
+            .item p {
+                font-size: 18px;
+                color: #333;
+            }
+            
+            input :checked + p {
+                background: lightgray;
+                text-decoration: line-through;
+            } 
+        </style>
+    </head>
+    <body>
+        <div class="inbox">
+            <div class="item"><input type="checkbox"><p>Email #1</p>></div>
+            <div class="item"><input type="checkbox"><p>Email #2</p>></div>
+            <div class="item"><input type="checkbox"><p>Email #3</p>></div>
+            <div class="item"><input type="checkbox"><p>Email #4</p>></div>
+            <div class="item"><input type="checkbox"><p>Email #5</p>></div>
+            <div class="item"><input type="checkbox"><p>Email #6</p>></div>
+            <div class="item"><input type="checkbox"><p>Email #7</p>></div>
+            <div class="item"><input type="checkbox"><p>Email #8</p>></div>
+            <div class="item"><input type="checkbox"><p>Email #9</p>></div>
+            <div class="item"><input type="checkbox"><p>Email #10</p>></div>
+        </div>
+
+        <script>
+            const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+            let lastChecked = null;
+
+            function handleCheck(e) {
+                let inBetween = false;
+                if(e.shiftKey && this.checked) {
+                    checkboxes.forEach(checkbox => {
+                        if(checkbox===this || checkbox===lastChecked) {
+                            inBetween = !inBetween;
+                        }
+                        if(inBetween){
+                            checkbox.checked = true;
+                        }
+                    });
+                }
+                lastChecked = this;
+            }
+
+            checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
+        </script>
+    </body>
+</html>
