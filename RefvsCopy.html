@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="JS Memory Model">
+        <meta name="author" content="Khyati Jaiswal">
+        <title>Reference vs Copy</title>
+    </head>
+    <body>
+        <script>
+            /*Primitives: Copied by Value*/
+            let age = 100;
+            let age2 = age;
+
+            age = 200;
+            console.log(age, age2); 
+
+            /*Arrays: Copied by Reference*/
+            const players = ['Khyati','Anjali','Riya','Sana'];
+            const team = players;
+
+            team[3] = 'Simran';
+            console.log(players, team);
+            console.log(players===team); 
+
+            /*Solution: Copying an Array*/
+            const team2 = players.slice();
+            console.log(players===team2);
+
+            const team3 = [].concat(players);
+            const team4 = [...players];
+            const team5 = Array.from(players);
+
+            team4[1] = 'Someone Else';
+            console.log(players, team4);
+
+            /*Objects: Copied by Reference*/
+            const person = {
+                name: 'Khyati',
+                age: 22
+            };
+            const captain = person;
+            captain.age = 30;
+            console.log(person, captain);
+            console.log(person===captain);
+
+            /*Solution: Copying an Object*/
+            const captain2 = Object.assign({}, person);
+            console.log(person===captain2);
+
+            const user = {
+                name: 'Riya',
+                age: 25,
+                social: {
+                    twitter: '@riya',
+                    instagram: '@riya_insta'
+                }
+            };
+
+            const shallowCopy = Object.assign({}, user);
+            shallowCopy.social.twitter = '@new_twitter';
+            console.log(user.social.twitter);
+
+            /*Deep Copying an Object*/
+            const deepCopy = JSON.parse(JSON.stringify(user));
+            deepCopy.social.instagram = '@new_insta';
+            console.log(user.social.instagram);
+
+        </script>
+    </body>
+</html>
