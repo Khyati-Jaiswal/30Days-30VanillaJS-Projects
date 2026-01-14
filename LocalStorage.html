@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content="Local Storage and DOM state sync exercise">
+        <meta name="author" content="Khyati Jaiswal">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Local Storage & Event Delegation</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                min-height: 100vh;
+                margin: 0;
+                background: #f5f5f5;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .wrapper {
+                background: white;
+                padding: 30px;
+                width: 400px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+            h2 {
+                margin-top: 0;
+                text-align: center;
+            }
+            .plates {
+                list-style: none;
+                padding: 0;
+                margin: 20px 0;
+            }
+            .plates li {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 8px 0;
+                border-bottom: 1px solid #ddd;
+            }
+            .plates input[type="checkbox"] {
+                transform: scale(1.2);
+                cursor: pointer;
+            }
+            .add-items {
+                display: flex;
+                gap: 10px;
+            }
+            .add-items input {
+                flex: 1;
+                padding: 8px;
+                font-size: 14px;
+            }
+            .add-items button {
+                padding: 8px 12px;
+                cursor: pointer;
+            }
+            .delete-btn {
+                margin-left: auto;
+                background: transparent;
+                border: none;
+                color: #c0392b;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            .delete-btn:hover {
+                transform: scale(1.2);
+            }
+        </style>
+    </head>
+    <body>
+        <svg>...</svg>
+        <div class="wrapper">
+            <h2>My Current Favorite Cuisines</h2>
+            <ul class="plates">
+                <li>Loading cuisines...</li>
+            </ul>
+            <form class="add-items">
+                <input type="text" name="item" placeholder="Add a new cuisine" required />
+                <button type="submit">Add cuisine</button>
+            </form>
+        </div>
+
+        <script>
+            const addItems = document.querySelector('.add-items');
+            const itemsList = document.querySelector('.plates');
+
+            const items = JSON.parse(localStorage.getItem('items')) || [];
+            function populateList(plates=[], platesList){
+                platesList.innerHTML = plates.map((plate, i) => {
+                    return `
+                        <li>
+                            <input type="checkbox" data-index="${i}" ${plate.done ? 'checked' : ''} />
+                            <label>${plate.text}</label>
+                            <button class="delete-btn" data-index="${i}">X</button>
+                        </li>
+                    `;
+                }).join('');
+            }
+
+            function addItem(e){
+                e.preventDefault();
+                const text = this.querySelector('[name=item]').value;
+                const item = {
+                    text,
+                    done:false
+                };
+                items.push(item);
+                localStorage.setItem('items',JSON.stringify(items));
+                populateList(items,itemsList);
+                this.reset();
+            }
+
+            function handleListClick(e){
+                if(e.target.matches('input')){
+                    const index = e.target.dataset.index;
+                    items[index].done = !items[index].done;
+                }
+                if(e.target.matches('.delete-btn')){
+                    const index = e.target.dataset.index;
+                    items.splice(index, 1);
+                }
+                localStorage.setItem('items',JSON.stringify(items));
+                populateList(items,itemsList);
+            }
+
+            addItems.addEventListener('submit',addItem);
+            itemsList.addEventListener('click',handleListClick);
+
+            populateList(items,itemsList);
+        </script>
+    </body>
+</html>
