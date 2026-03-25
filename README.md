@@ -40,37 +40,36 @@ Each project focuses on one concept or pattern.
 
 ## Project List
 
-Day 01 – JavaScript Drum Kit
-Day 02 – JS Clock
-Day 03 – CSS Variables
-Day 04 – Array Cardio 1
-Day 05 – Flex Panel Gallery
-Day 06 – Type Ahead
-Day 07 – Array Cardio 2
-Day 08 – Canvas Drawing
-Day 09 – Dev Tools Practice
-Day 10 – Shift Checkbox
-Day 11 – Custom Video Player
-Day 12 – Key Sequence Detection
-Day 13 – Slide on Scroll
-Day 14 – References vs Copying
-Day 15 – LocalStorage
-Day 16 – Mouse Shadow
-Day 17 – Sorting Bands
-Day 18 – Adding Times
-Day 19 – Webcam Effects
-Day 20 – Speech Detection
-Day 21 – Geolocation
-Day 22 – Follow Along Links
-Day 23 – Speech Synthesis
-Day 24 – Sticky Navigation
-Day 25 – Event Propagation
-Day 26 – Stripe Navigation UI
-Day 27 – Click and Drag
-Day 28 – Video Speed Control
-Day 29 – Countdown Timer
-Day 30 – Whack-A-Mole
-
+- Day 01 – JavaScript Drum Kit  
+- Day 02 – JS Clock  
+- Day 03 – CSS Variables  
+- Day 04 – Array Cardio 1  
+- Day 05 – Flex Panel Gallery  
+- Day 06 – Type Ahead  
+- Day 07 – Array Cardio 2  
+- Day 08 – Canvas Drawing  
+- Day 09 – Dev Tools Practice  
+- Day 10 – Shift Checkbox  
+- Day 11 – Custom Video Player  
+- Day 12 – Key Sequence Detection  
+- Day 13 – Slide on Scroll  
+- Day 14 – References vs Copying  
+- Day 15 – LocalStorage  
+- Day 16 – Mouse Shadow  
+- Day 17 – Sorting Bands  
+- Day 18 – Adding Times  
+- Day 19 – Webcam Effects  
+- Day 20 – Speech Detection  
+- Day 21 – Geolocation  
+- Day 22 – Follow Along Links  
+- Day 23 – Speech Synthesis  
+- Day 24 – Sticky Navigation  
+- Day 25 – Event Propagation  
+- Day 26 – Stripe Navigation UI  
+- Day 27 – Click and Drag  
+- Day 28 – Video Speed Control  
+- Day 29 – Countdown Timer  
+- Day 30 – Whack-A-Mole  
 ---
 
 ## What I learned
