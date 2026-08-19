@@ -12,7 +12,7 @@ https://courses.wesbos.com/
 ## Why I did this
 
 I realized that just watching tutorials wasn’t helping me actually *think in JavaScript*.
-So I decided to build things — small, focused projects — every day.
+So I decided to build things - small, focused projects — every day.
 
 These projects helped me understand:
 
